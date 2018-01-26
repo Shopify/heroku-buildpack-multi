@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+if [[ -n "${DEBUG:+set}" ]]; then
+  set -x
+fi
 
 unset GIT_DIR
 
