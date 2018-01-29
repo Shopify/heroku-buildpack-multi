@@ -21,14 +21,16 @@ for BUILDPACK in $(cat $1/.buildpacks); do
 
     if [[ "$url" =~ \.tgz$ ]] || [[ "$url" =~ \.tgz\? ]]; then
       mkdir -p "$dir"
-      curl -s "$url" | tar xvz -C "$dir" >/dev/null 2>&1
+      curl -s "$url" | tar xvz -C "$dir"
       if [ $? != 0 ]; then
         echo "Failed to grab $url"
+        exit 1
       fi
     else
       git clone $url $dir
       if [ $? != 0 ]; then
         echo "Failed to clone $url, do you have shopify-dep added as a collaborator to your repo?"
+        exit 1
       fi
     fi
     cd $dir
@@ -37,6 +39,7 @@ for BUILDPACK in $(cat $1/.buildpacks); do
       git checkout $branch 
       if [ $? != 0 ]; then
         echo "Failed to checkout $branch"
+        exit 1
       fi
     fi
 
